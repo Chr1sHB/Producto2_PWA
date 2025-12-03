@@ -18,7 +18,7 @@
         <p class="text-white text-sm mt-4 opacity-80">Cargando aventura...</p>
     </div>
 
-    <!-- HOME APP -->
+    <!-- APP CONTENT -->
     <div id="app" class="hidden-section flex flex-col h-screen opacity-0 transition-opacity duration-500">
         
         <header class="bg-indigo-600 text-white p-4 shadow-md z-10 flex justify-between items-center">
@@ -37,42 +37,47 @@
 
         <main class="flex-1 p-4 overflow-y-auto pb-20 relative scroll-smooth">
             
-            <!-- VISTA DEL TEMA -->
+            <!-- VISTA TEORÍA -->
             <section id="theory-view" class="view-section animate-fade-in">
-                
-                <!--DEFINICIÓN -->
+                <!-- 1. DEFINICIÓN -->
                 <div class="card mb-4 bg-gradient-to-br from-indigo-50 to-white border-l-4 border-indigo-500">
                     <h2 class="text-xl font-bold text-indigo-800 mb-2">¿Qué es la Recta Numérica?</h2>
                     <p class="text-gray-700 text-sm mb-3">
                         Es una línea infinita donde ordenamos todos los números enteros. El <strong>Cero (0)</strong> es el punto de origen en el centro.
                     </p>
-                    
-                    <!-- Diagrama CSS simple -->
-                    <div class="flex items-center justify-center space-x-2 text-xs font-mono bg-white p-2 rounded border border-gray-200 shadow-sm">
-                        <span class="text-red-500 font-bold">Negativos (Izquierda)</span>
+                    <div class="flex items-center justify-center space-x-2 text-xs font-mono bg-white p-2 rounded border border-gray-200 shadow-sm mb-3">
+                        <span class="text-red-500 font-bold">Negativos</span>
                         <span class="text-gray-400">← -3 -2 -1</span>
                         <span class="bg-indigo-600 text-white px-2 rounded-full">0</span>
                         <span class="text-gray-400">+1 +2 +3 →</span>
-                        <span class="text-green-600 font-bold">Positivos (Derecha)</span>
+                        <span class="text-green-600 font-bold">Positivos</span>
                     </div>
                 </div>
 
-                <!-- CONCEPTOS CLAVE -->
+                <!-- 2. REGLAS DE ORO -->
                 <div class="card mb-4">
-                    <h2 class="text-lg font-bold text-gray-800 mb-2">Reglas de Oro</h2>
-                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-lg font-bold text-gray-800">Reglas de Oro</h2>
+                        <button id="btn-refresh-examples" class="text-xs bg-gray-100 text-indigo-600 px-2 py-1 rounded hover:bg-gray-200">🎲 Nuevos</button>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-4 text-sm text-gray-700 mb-4">
                         <li>
-                            <strong class="text-green-600">Números Positivos (+):</strong>
-                            Representan ganancias, alturas o calor. Se escriben a la <strong>derecha</strong>.
+                            <strong class="text-green-600">Positivos (+):</strong> A la derecha del 0, son números <em>mayores</em> al 0, mientras más pequeño el número <em>(menor)</em>, más cerca se encuentra del 0, mientras más grande el número <em>(mayor)</em>, más lejos del 0 se encuentra.
+                            <br>
+                            Pueden representar cantidades como las ganancias de una empresa, temperaturas altas, o niveles positivos, como por ejemplo en referencia a la altura sobre el nivel del mar.
+
+                            <div id="dynamic-pos-example" class="mt-2 text-xs transition-all"></div>
                         </li>
                         <li>
-                            <strong class="text-red-600">Números Negativos (-):</strong>
-                            Representan deudas, profundidades o frío. Se escriben a la <strong>izquierda</strong>.
+                            <strong class="text-red-600">Negativos (-):</strong> A la izquierda del 0, son números <em>menores</em> al 0, mientras más grande es el número <em>(mayor)</em>, más cerca se encuentra del 0, mientras más pequeño es el número <em>(menor)</em>, más lejos del 0 se encuentra.
+                            <br>
+                            Pueden representar cantidades como las pérdidas de una empresa, temperaturas bajas, o niveles negativos, como por ejemplo en referencia a la profundidad bajo el nivel del mar.
+                            <div id="dynamic-neg-example" class="mt-2 text-xs transition-all"></div>
                         </li>
                     </ul>
+                    
                 </div>
 
-                <!-- 3. CASO DE ESTUDIO -->
                 <div class="card mb-4 border border-indigo-100">
                     <h3 class="font-bold text-indigo-700 mb-2">Caso Real: Temperaturas 🌡️</h3>
                     <p class="text-sm text-gray-600 mb-2">
@@ -96,25 +101,34 @@
                     </div>
                 </div>
 
-                <!-- Contenido Dinámico del Servidor -->
                 <div id="server-content"></div>
+                <p class="text-[15px] text-gray-500 text-right italic border-t border-indigo-100 pt-1">
+                    Fuente: Almodóvar, J. A. (2025). <em>Matématicas 6</em> (1.a ed.). José A. Almoldovar.
+                </p>
             </section>
 
-            <!-- VISTA PRÁCTICA -->
+            <!-- VISTA PRÁCTICA (MODIFICADA: EXPLORADOR) -->
             <section id="practice-view" class="view-section hidden animate-fade-in">
                 <div class="card">
-                    <h2 class="text-xl font-bold text-indigo-700 mb-2">🎮 Robot Entero</h2>
-                    <p class="text-sm text-gray-600 mb-4">Mueve el deslizador hasta el número: <span id="target-val" class="font-bold text-2xl text-purple-600 block text-center mt-2">0</span></p>
+                    <h2 class="text-xl font-bold text-indigo-700 mb-2">🧭 Explorador de Recta</h2>
+                    <p class="text-sm text-gray-600 mb-4">Desliza para ver la posición de cada número.</p>
                     
-                    <div class="recta-container mb-4 shadow-inner">
-                        <div class="recta-labels"><span>-10</span><span>0</span><span>+10</span></div>
-                        <div id="robot-icon" class="robot">🤖</div>
-                        <!-- Línea central decorativa -->
-                        <div class="absolute w-full h-0.5 bg-gray-400 top-1/2 -z-10"></div>
+                    <!-- Visor de Posición Actual -->
+                    <div class="text-center mb-6">
+                        <span class="text-sm text-gray-500">Estás en el número:</span>
+                        <div id="current-pos-display" class="text-4xl font-bold text-gray-800 transition-colors mt-1">0</div>
+                        <div id="current-pos-desc" class="text-xs text-gray-400 font-mono h-4">Neutro</div>
+                    </div>
+                    
+                    <!-- Contenedor de la Recta (Game.js inyectará las marcas aquí) -->
+                    <div id="game-recta-container" class="relative h-12 bg-gray-100 rounded border border-gray-300 shadow-inner mb-6">
+                        <!-- El Robot -->
+                        <div id="robot-icon" class="absolute top-1/2 -translate-y-1/2 text-2xl z-20 transition-all duration-100 transform -translate-x-1/2" style="left: 50%;">🤖</div>
                     </div>
 
                     <input type="range" id="game-slider" min="-10" max="10" value="0" class="w-full accent-indigo-600 h-8 cursor-pointer">
-                    <button id="btn-check-game" class="btn-primary mt-6 text-lg">¡Comprobar Posición!</button>
+                    
+                    <p class="text-xs text-center text-gray-400 mt-4">Observa cómo cambia el signo según el lado.</p>
                 </div>
             </section>
 
@@ -122,8 +136,8 @@
             <section id="quiz-view" class="view-section hidden animate-fade-in">
                 <div class="card">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold text-indigo-700">Test de Conocimiento</h2>
-                        <span id="quiz-mode-badge" class="badge bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">Cargando...</span>
+                        <h2 class="text-xl font-bold text-indigo-700">Test</h2>
+                        <span id="quiz-mode-badge" class="badge bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">...</span>
                     </div>
                     <div id="quiz-interface"></div>
                 </div>
@@ -132,24 +146,17 @@
         </main>
     </div>
     
-    <!-- Script de seguridad-->
     <script>
         const to = setTimeout(() => { 
             document.getElementById('splash-screen').style.display='none'; 
             document.getElementById('app').classList.remove('hidden-section','opacity-0'); 
-            console.warn("Carga lenta: Activando modo seguro.");
         }, 5000);
-        
         window.appLoaded = () => { 
             clearTimeout(to); 
             document.getElementById('splash-screen').style.display='none'; 
             document.getElementById('app').classList.remove('hidden-section','opacity-0'); 
         };
     </script>
-
-    <!-- Módulo Principal -->
-    <script type="module">
-        import './js/app.js';
-    </script>
+    <script type="module" src="./js/app.js"></script>
 </body>
 </html>

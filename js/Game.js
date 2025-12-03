@@ -1,64 +1,70 @@
 export const Game = {
-    target: 0,
-    currentPos: 0,
-    
     init() {
-        this.generateTarget();
-        this.setupListeners();
-    },
-
-    generateTarget() {
-        // Aleatorio entre -9 y 9
-        this.target = Math.floor(Math.random() * 19) - 9;
-        const sign = this.target > 0 ? "+" : "";
-        document.getElementById('target-val').innerText = `${sign}${this.target}`;
-    },
-
-    setupListeners() {
-        const slider = document.getElementById('game-slider');
-        const checkBtn = document.getElementById('btn-check-game');
+        this.slider = document.getElementById('game-slider');
+        this.robot = document.getElementById('robot-icon');
+        this.container = document.getElementById('game-recta-container');
+        this.displayVal = document.getElementById('current-pos-display');
+        this.displayDesc = document.getElementById('current-pos-desc');
         
-        // Slider manual
-        slider.addEventListener('input', (e) => {
-            this.updateRobot(parseInt(e.target.value));
+        this.renderTicks();
+        
+        this.slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            this.updatePosition(val);
         });
 
-        // Botón comprobar
-        checkBtn.addEventListener('click', () => this.check());
-
-        // Hardware: Acelerómetro
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', (e) => {
-                const tilt = e.gamma; // Izquierda/Derecha
-                if (tilt !== null) {
-                    let val = Math.round(tilt / 3);
-                    if (val < -10) val = -10;
-                    if (val > 10) val = 10;
-                    
-                    // Solo actualizar si la diferencia es significativa
-                    if(Math.abs(val - this.currentPos) >= 1) {
-                         this.updateRobot(val);
-                         slider.value = val;
-                    }
-                }
-            });
-        }
+        this.updatePosition(0);
     },
 
-    updateRobot(val) {
-        this.currentPos = val;
-        // Mapear -10..10 a 0%..100%
+    renderTicks() {
+        let html = '';
+        
+        html += `<div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-indigo-200 z-0"></div>`;
+
+        for(let i = -10; i <= 10; i++) {
+            const left = ((i + 10) / 20) * 100;
+            const isMajor = i % 5 === 0;
+            
+            const height = isMajor ? 'h-full' : 'h-2 top-1/2 -translate-y-1/2'; 
+            const color = isMajor ? 'bg-gray-500' : 'bg-gray-400';
+            const width = isMajor ? 'w-px' : 'w-px';
+            
+            html += `<div class="absolute ${height} ${color} ${width} transform -translate-x-1/2" style="left: ${left}%;"></div>`;
+
+            // Dibujar números
+            if (isMajor) {
+                const textVal = i > 0 ? `+${i}` : `${i}`;
+                html += `<span class="absolute text-[10px] text-gray-400 bottom-0.5 font-mono transform -translate-x-1/2" style="left: ${left}%;">${textVal}</span>`;
+            }
+        }
+        
+        const ticksContainer = document.createElement('div');
+        ticksContainer.className = "absolute inset-0 z-0";
+        ticksContainer.innerHTML = html;
+        this.container.appendChild(ticksContainer);
+    },
+
+    updatePosition(val) {
         const percent = ((val + 10) / 20) * 100;
-        document.getElementById('robot-icon').style.left = `${percent}%`;
-    },
+        this.robot.style.left = `${percent}%`;
 
-    check() {
-        if (this.currentPos === this.target) {
-            alert("¡Excelente! 🎉 Has encontrado el número.");
-            this.generateTarget();
+        let text = val === 0 ? "0" : (val > 0 ? `+${val}` : `${val}`);
+        this.displayVal.innerText = text;
+
+        if (val > 0) {
+            this.displayVal.className = "text-5xl font-bold text-green-600 transition-colors mt-1";
+            this.displayDesc.innerText = "Positivo (Derecha y Mayor a 0)";
+            this.displayDesc.className = "text-xs text-green-500 font-bold font-mono h-4";
+        } else if (val < 0) {
+            this.displayVal.className = "text-5xl font-bold text-red-600 transition-colors mt-1";
+            this.displayDesc.innerText = "Negativo(Izquierda y Menor a 0)";
+            this.displayDesc.className = "text-xs text-red-500 font-bold font-mono h-4";
         } else {
-            alert(`Casi... Estás en ${this.currentPos}, busca el ${this.target}`);
-            if (navigator.vibrate) navigator.vibrate([100,50,100]);
+            this.displayVal.className = "text-5xl font-bold text-gray-800 transition-colors mt-1";
+            this.displayDesc.innerText = "Origen (Neutro e Igual a 0)";
+            this.displayDesc.className = "text-xs text-gray-400 font-bold font-mono h-4";
         }
+        
+        if(navigator.vibrate) navigator.vibrate(5);
     }
 };
