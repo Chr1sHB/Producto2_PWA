@@ -42,6 +42,14 @@ const questionsDB = [
     { id: 16, text: "¿Qué signo usas para representar 'Altura sobre el nivel del mar'?", options: ["Positivo (+)", "Negativo (-)"], correct: "Positivo (+)", explanation: "Las alturas son positivas, las profundidades negativas." }
 ];
 
+app.get('/', (req, res) => {
+    res.send(`
+        <div >
+            <h1>SERVIDOR LEVANTADO, ES POSIBLE HACER PETICIONES.</h1>
+        </div>
+    `);
+});
+
 app.get('/api/questions', (req, res) => {
     const shuffled = [...questionsDB].sort(() => 0.5 - Math.random());
     res.json(shuffled.slice(0, 5));
