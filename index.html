@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Recta Entera POO</title>
+    <title>La Recta Entera PWA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="manifest" href="./manifest.json">
@@ -13,80 +13,117 @@
 
     <!-- SPLASH SCREEN -->
     <div id="splash-screen">
-        <h1 class="text-4xl text-white font-bold mb-4">La Recta Entera 🚀</h1>
+        <h1 class="text-4xl text-white font-bold mb-4">Mates 6º 🚀</h1>
         <div class="loader"></div>
-        <p id="loading-msg" class="text-white text-sm mt-4 opacity-80">Cargando módulos...</p>
+        <p class="text-white text-sm mt-4 opacity-80">Cargando aventura...</p>
     </div>
 
-    <!-- ERROR SCREEN (Oculto por defecto) -->
-    <div id="error-screen" class="hidden fixed inset-0 bg-red-50 z-40 flex flex-col justify-center items-center p-6 text-center">
-        <h2 class="text-2xl font-bold text-red-600 mb-2">⚠️ Error de Carga Offline</h2>
-        <p class="text-gray-700 mb-4">Parece que algunos archivos no se guardaron correctamente.</p>
-        <button onclick="window.location.reload()" class="bg-red-600 text-white px-6 py-2 rounded shadow">
-            Reintentar
-        </button>
-    </div>
-
-    <!-- APP CONTENT -->
+    <!-- HOME APP -->
     <div id="app" class="hidden-section flex flex-col h-screen opacity-0 transition-opacity duration-500">
         
-        <!-- HEADER -->
         <header class="bg-indigo-600 text-white p-4 shadow-md z-10 flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold">Mates 6º</h1>
-                <p id="connection-status" class="text-xs text-indigo-200">Online</p>
+                <h1 class="text-xl font-bold">La Recta Entera</h1>
+                <p id="connection-status" class="text-xs text-indigo-200">Frontend</p>
             </div>
-            <button id="btn-notify" class="bg-indigo-500 p-2 rounded-full text-xs">🔔 Alertas</button>
+            <button id="btn-notify" class="bg-indigo-500 p-2 rounded-full text-xs hover:bg-indigo-700 transition">🔔 Alertas</button>
         </header>
 
-        <!-- NAV -->
         <nav class="flex justify-around bg-white shadow-sm p-2 text-gray-600 z-10">
-            <button data-target="theory" class="nav-btn active-tab flex-1 py-2">Aprender</button>
-            <button data-target="practice" class="nav-btn flex-1 py-2">Practicar</button>
-            <button data-target="quiz" class="nav-btn flex-1 py-2">Evaluación</button>
+            <button data-target="theory" class="nav-btn active-tab flex-1 py-2 font-medium">Aprender</button>
+            <button data-target="practice" class="nav-btn flex-1 py-2 font-medium">Practicar</button>
+            <button data-target="quiz" class="nav-btn flex-1 py-2 font-medium">Evaluación</button>
         </nav>
 
-        <!-- MAIN -->
-        <main class="flex-1 p-4 overflow-y-auto pb-20 relative">
+        <main class="flex-1 p-4 overflow-y-auto pb-20 relative scroll-smooth">
             
-            <!-- VISTA TEORÍA -->
-            <section id="theory-view" class="view-section">
-                <div class="card">
-                    <h2 class="text-2xl font-bold text-indigo-700 mb-2">Conceptos Clave</h2>
-                    <p class="mb-2">La recta entera ordena los números:</p>
-                    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
-                        <li><b class="text-red-500">Negativos (-):</b> Izquierda del 0.</li>
-                        <li><b class="text-green-500">Positivos (+):</b> Derecha del 0.</li>
-                    </ul>
-                    <div class="text-center text-2xl font-bold my-4 bg-gray-100 p-2 rounded">
-                        -5 <span class="text-gray-400">&lt;</span> 0 <span class="text-gray-400">&lt;</span> +5
+            <!-- VISTA DEL TEMA -->
+            <section id="theory-view" class="view-section animate-fade-in">
+                
+                <!--DEFINICIÓN -->
+                <div class="card mb-4 bg-gradient-to-br from-indigo-50 to-white border-l-4 border-indigo-500">
+                    <h2 class="text-xl font-bold text-indigo-800 mb-2">¿Qué es la Recta Numérica?</h2>
+                    <p class="text-gray-700 text-sm mb-3">
+                        Es una línea infinita donde ordenamos todos los números enteros. El <strong>Cero (0)</strong> es el punto de origen en el centro.
+                    </p>
+                    
+                    <!-- Diagrama CSS simple -->
+                    <div class="flex items-center justify-center space-x-2 text-xs font-mono bg-white p-2 rounded border border-gray-200 shadow-sm">
+                        <span class="text-red-500 font-bold">Negativos (Izquierda)</span>
+                        <span class="text-gray-400">← -3 -2 -1</span>
+                        <span class="bg-indigo-600 text-white px-2 rounded-full">0</span>
+                        <span class="text-gray-400">+1 +2 +3 →</span>
+                        <span class="text-green-600 font-bold">Positivos (Derecha)</span>
                     </div>
                 </div>
-                <div id="server-content" class="mt-4"></div>
+
+                <!-- CONCEPTOS CLAVE -->
+                <div class="card mb-4">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Reglas de Oro</h2>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700 mb-4">
+                        <li>
+                            <strong class="text-green-600">Números Positivos (+):</strong>
+                            Representan ganancias, alturas o calor. Se escriben a la <strong>derecha</strong>.
+                        </li>
+                        <li>
+                            <strong class="text-red-600">Números Negativos (-):</strong>
+                            Representan deudas, profundidades o frío. Se escriben a la <strong>izquierda</strong>.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. CASO DE ESTUDIO -->
+                <div class="card mb-4 border border-indigo-100">
+                    <h3 class="font-bold text-indigo-700 mb-2">Caso Real: Temperaturas 🌡️</h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Ayer medimos la temperatura en dos pueblos:
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 text-center text-sm mb-3">
+                        <div class="bg-blue-50 p-2 rounded">
+                            <p class="font-bold text-blue-800">Vallesol</p>
+                            <p class="text-2xl font-bold text-blue-600">-2°C</p>
+                            <p class="text-xs text-blue-400">Más frío (Izquierda)</p>
+                        </div>
+                        <div class="bg-orange-50 p-2 rounded">
+                            <p class="font-bold text-orange-800">Tejar</p>
+                            <p class="text-2xl font-bold text-orange-600">+4°C</p>
+                            <p class="text-xs text-orange-400">Más calor (Derecha)</p>
+                        </div>
+                    </div>
+                    <div class="text-center bg-gray-100 p-2 rounded font-bold text-gray-700 text-sm">
+                        -2 es menor que +4 <br>
+                        <span class="text-indigo-600 text-lg">-2 < +4</span>
+                    </div>
+                </div>
+
+                <!-- Contenido Dinámico del Servidor -->
+                <div id="server-content"></div>
             </section>
 
             <!-- VISTA PRÁCTICA -->
-            <section id="practice-view" class="view-section hidden">
+            <section id="practice-view" class="view-section hidden animate-fade-in">
                 <div class="card">
-                    <h2 class="text-xl font-bold text-indigo-700">🎮 Robot Entero</h2>
-                    <p class="text-sm text-gray-600 mb-4">Mueve el robot al: <span id="target-val" class="font-bold text-2xl text-purple-600">0</span></p>
+                    <h2 class="text-xl font-bold text-indigo-700 mb-2">🎮 Robot Entero</h2>
+                    <p class="text-sm text-gray-600 mb-4">Mueve el deslizador hasta el número: <span id="target-val" class="font-bold text-2xl text-purple-600 block text-center mt-2">0</span></p>
                     
-                    <div class="recta-container">
+                    <div class="recta-container mb-4 shadow-inner">
                         <div class="recta-labels"><span>-10</span><span>0</span><span>+10</span></div>
                         <div id="robot-icon" class="robot">🤖</div>
+                        <!-- Línea central decorativa -->
+                        <div class="absolute w-full h-0.5 bg-gray-400 top-1/2 -z-10"></div>
                     </div>
 
-                    <input type="range" id="game-slider" min="-10" max="10" value="0" class="w-full accent-indigo-600 mt-4">
-                    <button id="btn-check-game" class="btn-primary mt-4">¡Comprobar!</button>
+                    <input type="range" id="game-slider" min="-10" max="10" value="0" class="w-full accent-indigo-600 h-8 cursor-pointer">
+                    <button id="btn-check-game" class="btn-primary mt-6 text-lg">¡Comprobar Posición!</button>
                 </div>
             </section>
 
             <!-- VISTA QUIZ -->
-            <section id="quiz-view" class="view-section hidden">
+            <section id="quiz-view" class="view-section hidden animate-fade-in">
                 <div class="card">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold text-indigo-700">Test Dinámico</h2>
-                        <span id="quiz-mode-badge" class="badge bg-gray-200">Esperando</span>
+                        <h2 class="text-xl font-bold text-indigo-700">Test de Conocimiento</h2>
+                        <span id="quiz-mode-badge" class="badge bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">Cargando...</span>
                     </div>
                     <div id="quiz-interface"></div>
                 </div>
@@ -94,28 +131,19 @@
 
         </main>
     </div>
-
-    <!-- SCRIPT DE SALVAVIDAS (FAILSAFE) -->
+    
+    <!-- Script de seguridad-->
     <script>
-        // Si app.js no carga en 4 segundos, mostrar error y quitar splash
-        const appLoadTimeout = setTimeout(() => {
-            console.error("Tiempo de carga excedido. Posible fallo de módulos offline.");
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('error-screen').classList.remove('hidden');
-        }, 4000);
-
-        // Función global para indicar que la app cargó
-        window.appLoaded = () => {
-            clearTimeout(appLoadTimeout);
-            // Mostrar la app
-            const splash = document.getElementById('splash-screen');
-            splash.style.opacity = '0';
-            setTimeout(() => { 
-                splash.style.display = 'none'; 
-                const app = document.getElementById('app');
-                app.classList.remove('hidden-section');
-                app.classList.remove('opacity-0');
-            }, 500);
+        const to = setTimeout(() => { 
+            document.getElementById('splash-screen').style.display='none'; 
+            document.getElementById('app').classList.remove('hidden-section','opacity-0'); 
+            console.warn("Carga lenta: Activando modo seguro.");
+        }, 5000);
+        
+        window.appLoaded = () => { 
+            clearTimeout(to); 
+            document.getElementById('splash-screen').style.display='none'; 
+            document.getElementById('app').classList.remove('hidden-section','opacity-0'); 
         };
     </script>
 

@@ -1,17 +1,19 @@
 const CACHE_NAME = 'recta-entera-gh-v1';
 
-// RUTAS RELATIVAS (Crucial para GitHub Pages)
+// RUTAS LOCALES A CACHEAR
 const LOCAL_ASSETS = [
     './',
     './index.html',
     './manifest.json',
     './css/styles.css',
-    './js/config.js', // Asegúrate de incluir el nuevo archivo
+    './js/config.js',
     './js/app.js',
     './js/Quiz.js',
     './js/Game.js',
     './js/Storage.js'
 ];
+
+// RUTAS EXTERNAS A CACHEAR
 
 const EXTERNAL_ASSETS = ['https://cdn.tailwindcss.com'];
 
@@ -40,8 +42,6 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    // Si la petición es hacia tu API externa, NO la interceptes con caché estático
-    // Deja que pase a la red (o manéjala con estrategia Network First si quieres)
     if (event.request.url.includes('api/')) return;
 
     event.respondWith(

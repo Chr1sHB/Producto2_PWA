@@ -1,6 +1,6 @@
 import { Quiz } from './Quiz.js';
 import { Game } from './Game.js';
-import { API_URL } from './config.js'; // Importamos la configuración
+import { API_URL } from './config.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    // Cargar Vista Servidor (Usando URL Externa)
+    // Cargar Vista Servidor
     if (navigator.onLine) {
         try {
             const res = await fetch(`${API_URL}/api/daily-challenge-view`);
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Lógica Push VAPID (Usando URL Externa)
+    // Lógica Push VAPID 
     function urlBase64ToUint8Array(base64String) {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if ('serviceWorker' in navigator) {
         try {
-            // Usamos './' para GitHub Pages
             const register = await navigator.serviceWorker.register('./sw.js');
             if (navigator.onLine) register.update();
 
@@ -57,7 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (permission !== 'granted') return alert("Permiso denegado");
 
                 try {
-                    // Pedir clave pública al backend externo
                     const response = await fetch(`${API_URL}/api/vapid-public-key`);
                     const data = await response.json();
                     const convertedKey = urlBase64ToUint8Array(data.key);
@@ -67,7 +65,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         applicationServerKey: convertedKey
                     });
 
-                    // Enviar suscripción al backend externo
                     await fetch(`${API_URL}/api/subscribe`, {
                         method: 'POST',
                         body: JSON.stringify(subscription),

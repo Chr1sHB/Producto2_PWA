@@ -35,10 +35,10 @@ export const Game = {
                     if (val < -10) val = -10;
                     if (val > 10) val = 10;
                     
-                    // Solo actualizar si la diferencia es significativa para evitar "tembleque"
+                    // Solo actualizar si la diferencia es significativa
                     if(Math.abs(val - this.currentPos) >= 1) {
                          this.updateRobot(val);
-                         slider.value = val; // Sincronizar UI
+                         slider.value = val;
                     }
                 }
             });

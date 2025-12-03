@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const webpush = require('web-push'); // Necesitas: npm install web-push
+const webpush = require('web-push');
 const app = express();
 const port = 3000;
 
@@ -9,9 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- CONFIGURACIÓN VAPID ---
-// En un proyecto real, estas claves se generan UNA vez y se guardan en variables de entorno (.env)
-// Puedes generarlas en terminal con: npx web-push generate-vapid-keys
+// LLAVES VAPID (Generadas con web-push generate-vapid-keys)
 const publicVapidKey = 'BN8QKuz-z57LPlKAlU_OCuW4WRis_Ameg6J1g-poYf3KsmPgqLoXIKsr46b3I5STApYG_qAVXmzXV1uGsRh-1TA';
 const privateVapidKey = 'MXeeMV-UqMyNrXIeqr7wjX7GkFlqLOktY83ZpHT6OMU';
 
@@ -21,10 +19,10 @@ webpush.setVapidDetails(
     privateVapidKey
 );
 
-// Base de datos en memoria para suscripciones (En producción usar MongoDB/MySQL)
+// ARRAY DE SUSCRIPCIONES (Usado como sustituto de base de datos)
 let subscriptions = [];
 
-// --- DATOS EDUCATIVOS (Igual que antes) ---
+// --- REGISTRO DE PREGUNTAS---
 const questionsDB = [
     { id: 1, text: "¿Qué número es mayor?", options: ["-2", "+4"], correct: "+4", explanation: "En la recta, +4 está a la derecha de -2." }, 
     { id: 2, text: "Vallesol tuvo -2°C y Tejar +4°C. ¿Dónde hizo más frío?", options: ["Vallesol", "Tejar"], correct: "Vallesol", explanation: "-2 es menor que +4, por tanto es más frío." }, 
@@ -60,7 +58,7 @@ app.get('/api/daily-challenge-view', (req, res) => {
 
 // --- RUTAS PUSH ---
 
-// 1. Suscribirse
+// Suscribirse
 app.post('/api/subscribe', (req, res) => {
     const subscription = req.body;
     subscriptions.push(subscription);
@@ -76,8 +74,7 @@ app.post('/api/subscribe', (req, res) => {
     webpush.sendNotification(subscription, payload).catch(err => console.error(err));
 });
 
-// 2. Ruta para simular envío masivo (Admin)
-// Puedes llamar a esto desde Postman o navegador para probar
+// 2. Ruta para simular envío de notificación push
 app.get('/api/trigger-push', (req, res) => {
     const notificationPayload = JSON.stringify({
         title: 'Reto Matemático 🧠',
