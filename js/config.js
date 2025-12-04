@@ -1,1 +1,1 @@
-export const API_URL = 'https://producto2-pwa.onrender.com/';
+export const API_URL = 'https://producto2-pwa.onrender.com';
